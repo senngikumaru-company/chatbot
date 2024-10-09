@@ -147,43 +147,54 @@ Here is the FAQ data:
 Please use the information above to answer user queries. If a user asks a question that does not match the available FAQ, politely inform them that the information is unavailable or suggest they contact support for further assistance.
 """
 
+# 初期メッセージを設定
+system_prompt = "You are an assistant for ClassNK MRV Portal. Please assist with maritime-related questions."
+
 # st.session_stateを使いメッセージのやりとりを保存
 if "messages" not in st.session_state:
     st.session_state["messages"] = [
         {"role": "system", "content": system_prompt}
-        ]
+    ]
 
 # チャットボットとやりとりする関数
 def communicate():
     messages = st.session_state["messages"]
 
+    # ユーザーの入力メッセージを保存
     user_message = {"role": "user", "content": st.session_state["user_input"]}
     messages.append(user_message)
 
+    # OpenAIのAPIを使って応答を取得
     response = openai.ChatCompletion.create(
-        model="gpt-4-turbo",
+        model="gpt-4-turbo",  # GPT-4-turboモデルを使用
         messages=messages
     ) 
 
+    # ボットの応答メッセージを保存
     bot_message = response["choices"][0]["message"]
     messages.append(bot_message)
 
-    st.session_state["user_input"] = ""  # 入力欄を消去
+    # 入力フィールドをクリア
+    st.session_state["user_input"] = ""
 
 
 # ユーザーインターフェイスの構築
-st.title(" ClassNK MRV Portal Support ChatBot")
+st.title("ClassNK MRV Portal Support ChatBot")
 st.image("01_portal.png")
 st.write("Please ask your questions.")
 
+# ユーザー入力のテキストフィールド
 user_input = st.text_input("questions", key="user_input", on_change=communicate)
 
+# メッセージの表示
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
 
-    for message in reversed(messages[1:]):  # 直近のメッセージを上に
-        speaker = "🙂"
-        if message["role"]=="assistant":
-            speaker="🤖"
+    # メッセージの表示順を逆にして、直近のメッセージを上に表示
+    for message in reversed(messages[1:]):  # 最初のシステムメッセージは省略
+        speaker = "🙂"  # デフォルトはユーザー
+        if message["role"] == "assistant":
+            speaker = "🤖"  # ボットの応答にはロボットのアイコン
 
+        # メッセージを表示
         st.write(speaker + ": " + message["content"])
