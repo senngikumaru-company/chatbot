@@ -148,9 +148,6 @@ Please use the information above to answer user queries. If a user asks a questi
 """
 
 
-# 初期メッセージを設定
-system_prompt = "You are an assistant for ClassNK MRV Portal. Please assist with maritime-related questions."
-
 # st.session_stateを使いメッセージのやりとりを保存
 if "messages" not in st.session_state:
     st.session_state["messages"] = [
@@ -166,22 +163,24 @@ def communicate():
     messages.append(user_message)
 
     # OpenAIのAPIを使って応答を取得
-    response = openai.ChatCompletion.create(  # 正しいメソッドに戻す
-        model="gpt-4o",  # GPT-4oモデルを使用
+    response = openai.ChatCompletion.create(
+        model="gpt-4",  # 正しいモデル名に修正
         messages=messages  # メッセージリストを送信
     )
 
     # ボットの応答メッセージを保存
-    bot_message = response["choices"][0]["message"]["content"]
+    bot_message = response['choices'][0]['message']['content']
     messages.append({"role": "assistant", "content": bot_message})
 
     # 入力フィールドをクリア
     st.session_state["user_input"] = ""
 
-
-# ユーザーインターフェイスの構築
+# ユーザーインターフェースの構築
 st.title("ClassNK MRV Portal Support ChatBot")
-st.image("01_portal.png")
+
+# 画像の表示（画像のパスが正しいことを確認してください）
+st.image("01_portal.png")  # 画像パスが正しいことを確認
+
 st.write("Please ask your questions.")
 
 # ユーザー入力のテキストフィールド
