@@ -167,7 +167,7 @@ def communicate():
 
     # OpenAIのAPIを使って応答を取得
     response = openai.ChatCompletion.create(  # 正しいメソッドに戻す
-        model="gpt-4-turbo",  # GPT-4-turboモデルを使用
+        model="gpt-4o",  # GPT-4-turboモデルを使用
         messages=messages  # メッセージリストを送信
     )
 
