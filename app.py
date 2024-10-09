@@ -156,15 +156,15 @@ if "messages" not in st.session_state:
 
 # チャットボットとやりとりする関数
 def communicate():
-    messages = st.session_state["messages"]
+    messages = [{"role": message["role"], "content": message["content"]} for message in st.session_state["messages"]]
 
     # ユーザーの入力メッセージを保存
     user_message = {"role": "user", "content": st.session_state["user_input"]}
     messages.append(user_message)
 
     # OpenAIのAPIを使って応答を取得
-    response = openai.ChatCompletion.create(
-        model="gpt-4",  # 正しいモデル名に修正
+    response = openai.chat_completions.create(
+        model="gpt-4o",  # 正しいモデル名に修正
         messages=messages  # メッセージリストを送信
     )
 
