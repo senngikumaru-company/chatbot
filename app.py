@@ -163,8 +163,8 @@ def communicate():
     messages.append(user_message)
 
     # OpenAIのAPIを使って応答を取得
-    response = openai.chat_completions.create(
-        model="gpt-4o",  # 正しいモデル名に修正
+    response = openai.ChatCompletion.create(  # 修正: 正しいエンドポイント
+        model="gpt-4",  # 正しいモデル名に修正
         messages=messages  # メッセージリストを送信
     )
 
