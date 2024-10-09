@@ -164,7 +164,7 @@ def communicate():
 
     # OpenAIのAPIを使って応答を取得
     response = openai.completions.create(
-        model="gpt-40",  # 最新モデルを指定
+        model="gpt-4o",  # 最新モデルを指定
         prompt=prompt,          # プロンプトを送信
         max_tokens=500           # 応答の最大トークン数を設定
     )
