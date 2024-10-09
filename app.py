@@ -170,10 +170,11 @@ def communicate():
     messages.append(user_message)
 
     # OpenAIのAPIを使って応答を取得
-    response = openai.completions.create(  # 新しいAPIメソッド
+    response = openai.ChatCompletion.create(  # 正しいメソッドに変更
         model="gpt-4-turbo",  # GPT-4-turboモデルを使用
         messages=messages  # メッセージリストを送信
     )
+
 
     # ボットの応答メッセージを保存
     bot_message = response["choices"][0]["message"]["content"]
