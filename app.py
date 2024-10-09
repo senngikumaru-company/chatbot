@@ -162,7 +162,7 @@ def communicate():
 
     # OpenAIのAPIを使って応答を取得
     response = openai.chat.completions.create(  # 最新バージョンでの正しいエンドポイント
-        model="gpt-3.5-turbo",  # または "gpt-4"
+        model="gpt-4",  # または "gpt-4"
         messages=messages
     )
 
