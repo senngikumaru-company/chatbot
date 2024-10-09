@@ -1,6 +1,6 @@
 # 以下を「app.py」に書き込み
 import streamlit as st
-from openai import OpenAI
+import openai
 
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
