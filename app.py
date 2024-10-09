@@ -161,16 +161,16 @@ def communicate():
     messages.append(user_message)
 
     # OpenAIのAPIを使って応答を取得
-    response = openai.chat.completions.create(  # 最新バージョンでの正しいエンドポイント
+    response = openai.ChatCompletion.create(
         model="gpt-4",  # または "gpt-4"
         messages=messages
     )
 
     # ボットの応答メッセージを保存
-    bot_message = response['choices'][0]['message']['content']
-    st.session_state["messages"].append({"role": "assistant", "content": bot_message})
+    bot_message = response.choices[0].message["content"]  # ここを修正
 
     # 入力フィールドをクリア
+    st.session_state["messages"].append({"role": "assistant", "content": bot_message})
     st.session_state["user_input"] = ""
 
 # ユーザーインターフェースの構築
