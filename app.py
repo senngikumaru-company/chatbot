@@ -136,8 +136,8 @@ Here is the FAQ data:
     - Category: "Ship"
     - Tags: "Ship/User Information"
 23
-    - Question: "'EUMRV MP', please select the system you are using in the Project tab. For IMODCS-only vessels, please enter the system you will be using in the far right box on the Report template page.”
-    - Answer: “The IMODCS Annual Report for the period up to the change of control and (if entering the EU) the EUMRV Emission Report must be prepared and submitted.IMODCS guide; https://eumrv.shipdatacenter.com/portal/res/guide/IMODCS%20Data%20aggregation%20and%20reporting%20(e).pdfEUMRV guide; https://eumrv.shipdatacenter.com/portal/res/guide/Submission%20of%20Emission%20Report(e).pdf”
+    - Question: "What settings do I need to make to transfer data from an external system?"
+    - Answer: “'EUMRV MP', please select the system you are using in the Project tab. For IMODCS-only vessels, please enter the system you will be using in the far right box on the Report template page.”
     - Category: "Voyage data"
     - Tags: "Voyage data"  
 24. 
