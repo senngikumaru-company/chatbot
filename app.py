@@ -156,21 +156,19 @@ if "messages" not in st.session_state:
 
 # チャットボットとやりとりする関数
 def communicate():
-    messages = [{"role": message["role"], "content": message["content"]} for message in st.session_state["messages"]]
-
-    # ユーザーの入力メッセージを保存
+    # ユーザーの入力メッセージを取得
     user_message = {"role": "user", "content": st.session_state["user_input"]}
-    messages.append(user_message)
+    st.session_state["messages"].append(user_message)
 
     # OpenAIのAPIを使って応答を取得
-    response = openai.ChatCompletion.create(
-        model="gpt-4",  #  "gpt-4" に変更
-        messages=messages,  # メッセージリストを送信
-        max_tokens=500       # 応答の最大トークン数を設定
+    response = openai.chat_completions.create(
+        model="gpt-4",  # または "gpt-4"
+        messages=st.session_state["messages"],  # メッセージリストを送信
+        max_tokens=500
     )
 
     # ボットの応答メッセージを保存
-    bot_message = response['choices'][0]['message']['content']
+    bot_message = response.choices[0].message["content"]
     st.session_state["messages"].append({"role": "assistant", "content": bot_message})
 
     # 入力フィールドをクリア
@@ -178,24 +176,14 @@ def communicate():
 
 # ユーザーインターフェースの構築
 st.title("ClassNK MRV Portal Support ChatBot")
-
-# 画像の表示（画像のパスが正しいことを確認してください）
-st.image("01_portal.png")  # 画像パスが正しいことを確認
-
 st.write("Please ask your questions.")
 
 # ユーザー入力のテキストフィールド
-user_input = st.text_input("questions", key="user_input", on_change=communicate)
+st.text_input("questions", key="user_input", on_change=communicate)
 
 # メッセージの表示
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
-
-    # メッセージの表示順を逆にして、直近のメッセージを上に表示
     for message in reversed(messages[1:]):  # 最初のシステムメッセージは省略
-        speaker = "🙂"  # デフォルトはユーザー
-        if message["role"] == "assistant":
-            speaker = "🤖"  # ボットの応答にはロボットのアイコン
-
-        # メッセージを表示
+        speaker = "🙂" if message["role"] == "user" else "🤖"
         st.write(speaker + ": " + message["content"])
