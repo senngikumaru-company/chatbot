@@ -1,8 +1,11 @@
 # 以下を「app.py」に書き込み
+from openai import OpenAI
 import streamlit as st
-import openai
 
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
+
+# OpenAIクライアントの初期化
+client = OpenAI()
 
 system_prompt = """
 You are an expert assistant for the Japan Maritime Association. Your role is to only answer maritime-related questions based on the provided FAQ data. If a question is outside this scope (such as travel, cooking, or movies), politely inform the user that you cannot answer it.
@@ -154,6 +157,12 @@ if "messages" not in st.session_state:
         {"role": "system", "content": system_prompt}
     ]
 
+# st.session_stateを使いメッセージのやりとりを保存
+if "messages" not in st.session_state:
+    st.session_state["messages"] = [
+        {"role": "system", "content": system_prompt}
+    ]
+
 # チャットボットとやりとりする関数
 def communicate():
     messages = st.session_state["messages"]
@@ -161,13 +170,13 @@ def communicate():
     messages.append(user_message)
 
     # OpenAIのAPIを使って応答を取得
-    response = openai.ChatCompletion.create(
-        model="gpt-4",  # または "gpt-4"
+    response = client.chat.completions.create(
+        model="gpt-4",  # または "gpt-3.5-turbo"
         messages=messages
     )
 
     # ボットの応答メッセージを保存
-    bot_message = response.choices[0].message["content"]  # ここを修正
+    bot_message = response.choices[0].message.content
 
     # 入力フィールドをクリア
     st.session_state["messages"].append({"role": "assistant", "content": bot_message})
