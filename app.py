@@ -156,20 +156,21 @@ if "messages" not in st.session_state:
 
 # チャットボットとやりとりする関数
 def communicate():
-    messages = [{"role": message["role"], "content": message["content"]} for message in st.session_state["messages"]]
+    # ユーザーの入力メッセージを取得
+    user_message = st.session_state["user_input"]
 
-    # ユーザーの入力メッセージを保存
-    user_message = {"role": "user", "content": st.session_state["user_input"]}
-    messages.append(user_message)
+    # ユーザーの入力をもとにプロンプトを生成
+    prompt = system_prompt + "\nUser: " + user_message + "\nAssistant:"
 
     # OpenAIのAPIを使って応答を取得
-    response = openai.completions.create(  # 新しいAPIエンドポイント
-        model="gpt-4o",  # GPT-4oモデルを使用
-        messages=messages  # メッセージリストを送信
+    response = openai.completions.create(
+        model="gpt-40",  # 最新モデルを指定
+        prompt=prompt,          # プロンプトを送信
+        max_tokens=500           # 応答の最大トークン数を設定
     )
 
     # ボットの応答メッセージを保存
-    bot_message = response['choices'][0]['message']['content']
+    bot_message = response['choices'][0]['text']
     st.session_state["messages"].append({"role": "assistant", "content": bot_message})
 
     # 入力フィールドをクリア
