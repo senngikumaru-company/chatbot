@@ -147,6 +147,11 @@ Here is the FAQ data:
 Please use the information above to answer user queries. If a user asks a question that does not match the available FAQ, politely inform them that the information is unavailable or suggest they contact support for further assistance.
 """
 
+import openai
+
+# OpenAI APIキーを設定
+openai.api_key = "your-api-key"  # APIキーを設定
+
 # 初期メッセージを設定
 system_prompt = "You are an assistant for ClassNK MRV Portal. Please assist with maritime-related questions."
 
@@ -165,14 +170,14 @@ def communicate():
     messages.append(user_message)
 
     # OpenAIのAPIを使って応答を取得
-    response = openai.ChatCompletion.create(
+    response = openai.completions.create(  # 新しいAPIメソッド
         model="gpt-4-turbo",  # GPT-4-turboモデルを使用
-        messages=messages
-    ) 
+        messages=messages  # メッセージリストを送信
+    )
 
     # ボットの応答メッセージを保存
-    bot_message = response["choices"][0]["message"]
-    messages.append(bot_message)
+    bot_message = response["choices"][0]["message"]["content"]
+    messages.append({"role": "assistant", "content": bot_message})
 
     # 入力フィールドをクリア
     st.session_state["user_input"] = ""
