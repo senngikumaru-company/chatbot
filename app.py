@@ -166,15 +166,13 @@ def communicate():
     messages.append(user_message)
 
     # OpenAIのAPIを使って応答を取得
-    response = openai.completions.create(  # 新しいメソッドに変更
+    response = openai.ChatCompletion.create(  # 正しいメソッドに戻す
         model="gpt-4-turbo",  # GPT-4-turboモデルを使用
-        prompt=messages,  # promptを使用
-        max_tokens=150,  # 必要に応じてトークン数を設定
-        temperature=0.7,  # 生成されるテキストのランダム性
+        messages=messages  # メッセージリストを送信
     )
 
     # ボットの応答メッセージを保存
-    bot_message = response["choices"][0]["text"]  # メッセージの取得方法変更
+    bot_message = response["choices"][0]["message"]["content"]
     messages.append({"role": "assistant", "content": bot_message})
 
     # 入力フィールドをクリア
